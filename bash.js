@@ -11,5 +11,10 @@ process.stdin.on('data', function(data) {
     .slice(1)
     .join(' ');
 
-  commands[cmd](argumento);
+  commands[cmd](done, argumento);
 });
+
+var done = function(response) {
+  process.stdout.write(response);
+  process.stdout.write('\nprompt > ');
+};

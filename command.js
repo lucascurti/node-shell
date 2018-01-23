@@ -2,13 +2,13 @@ var fs = require('fs');
 var rq = require('request');
 
 module.exports = {
-  pwd: function() {
+  pwd: function(done) {
     done(process.env.PWD);
   },
-  date: function() {
+  date: function(done) {
     done(Date());
   },
-  ls: function() {
+  ls: function(done) {
     var files = fs.readdirSync('.');
     var directorios = '';
     files.forEach(function(file) {
@@ -16,36 +16,36 @@ module.exports = {
     });
     done(directorios);
   },
-  echo: function(argumento) {
+  echo: function(done, argumento) {
     done(argumento);
   },
-  cat: function(filePath) {
+  cat: function(done, filePath) {
     var content = fs.readFileSync(filePath);
     done(content);
   },
-  head: function(filePath) {
+  head: function(done, filePath) {
     var content = fs.readFileSync(filePath);
     var lines = content.toString('utf8').split('\n');
     lines = lines.slice(0, 5);
     done(lines.join('\n'));
   },
-  tail: function(filePath) {
+  tail: function(done, filePath) {
     var content = fs.readFileSync(filePath);
     var lines = content.toString('utf8').split('\n');
     lines = lines.slice(lines.length - 5);
     done(lines.join('\n'));
   },
-  sort: function(filePath) {
+  sort: function(done, filePath) {
     var content = fs.readFileSync(filePath);
     var lines = content.toString('utf8').split('\n');
     done(lines.sort().join('\n'));
   },
-  wc: function(filePath) {
+  wc: function(done, filePath) {
     var content = fs.readFileSync(filePath);
     var lines = content.toString('utf8').split('\n');
     done('Cantidad de líneas: ' + lines.length);
   },
-  uniq: function(filePath) {
+  uniq: function(done, filePath) {
     var newArray = [];
     var content = fs.readFileSync(filePath);
     var lines = content.toString('utf8').split('\n');
@@ -56,7 +56,7 @@ module.exports = {
     }
     done(newArray.join('\n'));
   },
-  curl: function(url) {
+  curl: function(done, url) {
     rq(url, function(error, response, body) {
       done(body);
     });
@@ -79,12 +79,7 @@ module.exports = {
     });
     return lines;
   },
-  find: function(path) {
+  find: function(done, path) {
     done(module.exports.findHelper(path));
   }
-};
-
-var done = function(response) {
-  process.stdout.write(response);
-  process.stdout.write('\nprompt > ');
 };
