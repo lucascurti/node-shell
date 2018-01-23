@@ -1,4 +1,5 @@
 var commands = require('./command.js');
+
 process.stdout.write('prompt > ');
 // The stdin 'data' event fires after a user types in a line
 process.stdin.on('data', function(data) {
@@ -11,6 +12,4 @@ process.stdin.on('data', function(data) {
     .join(' ');
 
   commands[cmd](argumento);
-
-  process.stdout.write('\nprompt > ');
 });
